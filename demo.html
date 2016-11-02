@@ -1,0 +1,200 @@
+<!doctype html>
+<html>
+<head >
+    <meta charset="utf-8">
+<title>Accordion - FormValidation</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link href="src/form_wizard.css" rel="stylesheet" type="text/css"/>
+    <script src="src/form_wizard.js" type="text/javascript"></script>
+</head>
+<body class="demo-bootstrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12" id="demoContainer" style="height: auto">
+                <style type="text/css">
+#accountForm {
+    margin-top: 15px;
+}
+</style>
+
+
+
+    
+
+<form id="accountForm" method="post" class="form-horizontal">
+    <div  class="bs-example">
+          
+        
+      <div class="panel-group" id="accordion">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"><a   data-toggle="collapse" data-parent="#accordion" href="#info-tab" aria-expanded="true">Information <i class="fa"></i></a></h4> 
+                 </div>
+        <div class="panel-collapse collapse in tab-pane"  id="info-tab">
+            <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-3 control-label">Full name</label>
+                <div class="col-xs-5">
+                    <input type="text" class="form-control" name="fullName" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-3 control-label">Company</label>
+                <div class="col-xs-5">
+                    <input type="text" class="form-control" name="company" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-3 control-label">Job title</label>
+                <div class="col-xs-5">
+                    <input type="text" class="form-control" name="jobTitle" />
+                </div>
+            </div>
+            </div>
+        </div>
+          </div>
+        
+        
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#address-tab" >Address <i class="fa"></i></a></h4>
+            </div>
+        <div class="panel-collapse collapse tab-pane" id="address-tab">
+            <div class="panel-body">
+            <div class="form-group">
+                <label class="col-xs-3 control-label">Address</label>
+                <div class="col-xs-5">
+                    <input type="text" class="form-control" name="address" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-3 control-label">City</label>
+                <div class="col-xs-5">
+                    <input type="text" class="form-control" name="city" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-3 control-label">Country</label>
+                <div class="col-xs-5">
+                    <select class="form-control" name="country">
+                        <option value="">Select a country</option>
+                        <option value="FR">France</option>
+                        <option value="DE">Germany</option>
+                        <option value="IT">Italy</option>
+                        <option value="JP">Japan</option>
+                        <option value="RU">Russian</option>
+                        <option value="US">United State</option>
+                        <option value="GB">United Kingdom</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+    </div>
+        
+        
+    </div>
+    
+    
+    
+    <div class="form-group" style="margin-top: 15px;">
+        <div class="col-xs-5 col-xs-offset-3">
+            <button type="submit" class="btn btn-default">Validate</button>
+        </div>
+    </div>
+</form>
+
+<script>
+$(document).ready(function() {
+    $('#accountForm')
+        .formValidation({
+            framework: 'bootstrap',
+            // Only disabled elements are excluded
+            // The invisible elements belonging to inactive tabs must be validated
+            excluded: [':disabled'],
+            icon: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                fullName: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The full name is required'
+                        }
+                    }
+                },
+                company: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The company name is required'
+                        }
+                    }
+                },
+                address: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The address is required'
+                        }
+                    }
+                },
+                city: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The city is required'
+                        }
+                    }
+                }
+            }
+        })
+        // Called when a field is invalid
+        .on('err.field.fv', function(e, data) {
+            // data.element --> The field element
+
+            var $tabPane = data.element.parents('.tab-pane'),
+                tabId    = $tabPane.attr('id');
+
+            $('a[href="#' + tabId + '"][data-toggle="collapse"]')
+                .parent()
+                .find('i')
+                .removeClass('fa-check')
+                .addClass('fa-times');
+        })
+        // Called when a field is valid
+        .on('success.field.fv', function(e, data) {
+            // data.fv      --> The FormValidation instance
+            // data.element --> The field element
+
+            var $tabPane = data.element.parents('.tab-pane'),
+                tabId    = $tabPane.attr('id'),
+                $icon    = $('a[href="#' + tabId + '"][data-toggle="collapse"]')
+                            .parent()
+                            .find('i')
+                            .removeClass('fa-check fa-times');
+
+            // Check if all fields in tab are valid
+            var isValidTab = data.fv.isValidContainer($tabPane);
+            if (isValidTab !== null) {
+                $icon.addClass(isValidTab ? 'fa-check' : 'fa-times');
+            }
+        });
+});
+
+</script>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
